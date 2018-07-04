@@ -38,14 +38,29 @@ class FtpFilesController < ApplicationController
     @ftp_file.destroy
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ftp_file
-      @ftp_file = FtpFile.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def ftp_file_params
-      params.require(:ftp_file).permit(:name, :path, :address, :ftp_server_id)
-    end
+  # GET /ftp_files/search
+  def search
+    page = params[:page].present? ? params[:page] : 1
+    per_page = params[:limit].present? ? params[:limit] : 25
+    #order = params[:order].present? ? params[:order] : 'DESC'
+    query = params[:query]
+    #sort = params[:sort].present? ? params[:sort] : 'id'
+
+    files = FtpFile.search(query, per_page)
+    @ftp_files = files.records.page(page).per_page(per_page)
+
+    render json: @ftp_files
+  end
+
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ftp_file
+    @ftp_file = FtpFile.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def ftp_file_params
+    params.require(:ftp_file).permit(:name, :path, :address, :ftp_server_id)
+  end
 end

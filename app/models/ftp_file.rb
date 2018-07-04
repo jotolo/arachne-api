@@ -34,7 +34,12 @@ class FtpFile < ApplicationRecord
                                                      analyzer: 'standard',
                                                      fields: ['name^10', 'address^5', 'path'],
                                                      type: 'cross_fields' } },
-                             sort: [{ name:  { order: 'asc' } }])
+                             #sort: [{ name:  { order: 'asc' } }]
+                             )
+  end
+
+  def as_indexed_json(options = {})
+    as_json(only: [:name, :path, :address])
   end
 
   private
