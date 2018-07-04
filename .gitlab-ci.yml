@@ -18,6 +18,6 @@ execute_tests:
     - rake elasticsearch:reindex RAILS_ENV=test
     - rspec
   only:
-    - development
+    - develop
     - master
 
