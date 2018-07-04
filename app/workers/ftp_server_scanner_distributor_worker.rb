@@ -18,7 +18,7 @@ class FtpServerScannerDistributorWorker
         new_path = "#{path}/#{entry.basename}"
         FtpServerScannerDistributorWorker.perform_async(ftp_server_id, new_path)
       else
-
+        # Unknown case
       end
     end
   end
