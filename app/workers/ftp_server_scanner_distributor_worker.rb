@@ -12,7 +12,8 @@ class FtpServerScannerDistributorWorker
 
       # Ignore everything that's not a file (so symlinks, directories and devices etc.)
       if entry.file?
-        puts "#{path + '/' + entry.basename}, #{entry.filesize}, #{entry.mtime}"
+        FtpFile.create(name: entry.basename, path: path, ftp_server_id: ftp_server_id)
+        #puts "#{path + '/' + entry.basename}, #{entry.filesize}, #{entry.mtime}"
       elsif entry.dir?
         new_path = "#{path}/#{entry.basename}"
         FtpServerScannerDistributorWorker.perform_async(ftp_server_id, new_path)
