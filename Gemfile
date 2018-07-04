@@ -28,9 +28,17 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# Background jobs
 gem 'redis'
 gem 'sidekiq'
+
+# FTP tools
 gem 'net-ftp-list'
+
+# Search
+gem 'elasticsearch', '6.1.0'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
