@@ -12,7 +12,7 @@ execute_tests:
     - /etc/init.d/postgresql start
     - sudo service redis-server start
     - sudo service elasticsearch start
-    - sudo -u postgres sh -c 'createuser root & createdb cronvo_test'
+    - sudo -u postgres sh -c 'createuser root & createdb arachne_test'
     - bundle install
     - rake db:migrate RAILS_ENV=test
     - rake elasticsearch:reindex RAILS_ENV=test
