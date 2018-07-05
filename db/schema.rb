@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2018_07_04_172643) do
   create_table "ftp_files", force: :cascade do |t|
     t.string "name"
     t.text "path"
-    t.text "address"
+    t.text "address", null: false
     t.integer "ftp_server_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
