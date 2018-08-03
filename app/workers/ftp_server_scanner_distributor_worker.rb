@@ -3,7 +3,7 @@ require 'net/ftp/list'
 class FtpServerScannerDistributorWorker
   include Sidekiq::Worker
 
-  def perform(ftp_server_id, path = '/')
+  def perform(ftp_server_id, path = nil)
     ftp_server = FtpServer.find(ftp_server_id)
 
     ftp = Net::FTP.open(ftp_server.host, ftp_server.user, ftp_server.password)
@@ -15,7 +15,7 @@ class FtpServerScannerDistributorWorker
         FtpFile.create(name: entry.basename, path: path, ftp_server_id: ftp_server_id)
         #puts "#{path + '/' + entry.basename}, #{entry.filesize}, #{entry.mtime}"
       elsif entry.dir?
-        new_path = "#{path}/#{entry.basename}"
+        new_path = path ? File.join(path,entry.basename) : File.join(File::SEPARATOR,entry.basename)
         FtpServerScannerDistributorWorker.perform_async(ftp_server_id, new_path)
       else
         # Unknown case

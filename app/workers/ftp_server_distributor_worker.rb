@@ -3,7 +3,7 @@ class FtpServerDistributorWorker
 
   def perform(*args)
     FtpServer.find_each do |ftp|
-      FtpServerScannerDistributorWorker.perform_async(ftp.id, '/')
+      FtpServerScannerDistributorWorker.perform_async(ftp.id)
     end
   end
 end

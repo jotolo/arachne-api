@@ -28,14 +28,19 @@ class FtpFile < ApplicationRecord
     end
   end
 
-  def self.search(query, results_count)
-    __elasticsearch__.search(from: 0, size: results_count,
-                             query: { multi_match: { query: query,
-                                                     analyzer: 'standard',
-                                                     fields: ['name^10', 'address^5', 'path'],
-                                                     type: 'cross_fields' } },
-                             #sort: [{ name:  { order: 'asc' } }]
-                             )
+  def self.search(query, search_count)
+    __elasticsearch__.search(
+        size: if search_count.nil?
+                10
+              else
+                search_count > 10000 ? 10000 : search_count
+              end,
+        query: { multi_match: { query: query,
+                                analyzer: 'standard',
+                                fields: ['name^15', 'address^5', 'path'],
+                                type: 'cross_fields' } },
+        #sort: [{ name:  { order: 'asc' } }]
+        )
   end
 
   def as_indexed_json(options = {})
@@ -44,6 +49,7 @@ class FtpFile < ApplicationRecord
 
   private
   def set_address
-    self.address = "#{ftp_server.host}/#{path}/#{name}"
+    #self.address = "#{ftp_server.host}/#{path}/#{name}"
+    self.address = "ftp://#{File.join(ftp_server.host,path,name)}"
   end
 end

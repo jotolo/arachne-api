@@ -44,13 +44,14 @@ class FtpFilesController < ApplicationController
     page = params[:page].present? ? params[:page] : 1
     per_page = params[:limit].present? ? params[:limit] : 25
     #order = params[:order].present? ? params[:order] : 'DESC'
-    query = params[:query]
+    query = params[:query] || "mic"
     #sort = params[:sort].present? ? params[:sort] : 'id'
 
-    files = FtpFile.search(query, per_page)
+    @count = FtpFile.search(query, nil).results.total
+    files = FtpFile.search(query, @count)
     @ftp_files = files.records.page(page).per_page(per_page)
 
-    render json: @ftp_files
+    render json: { data: @ftp_files, count: @count }
   end
 
   private
